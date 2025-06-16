@@ -1,78 +1,233 @@
-import healthMetricsData from '../mockData/healthMetrics.json'
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+import { toast } from 'react-toastify'
 
 class HealthMetricService {
   constructor() {
-    this.healthMetrics = [...healthMetricsData]
+    this.apperClient = null
+    this.initializeClient()
+  }
+
+  initializeClient() {
+    if (typeof window !== 'undefined' && window.ApperSDK) {
+      const { ApperClient } = window.ApperSDK
+      this.apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      })
+    }
   }
 
   async getAll() {
-    await delay(300)
-    return [...this.healthMetrics]
+    try {
+      if (!this.apperClient) this.initializeClient()
+      
+      const params = {
+        Fields: ['Name', 'Tags', 'Owner', 'CreatedOn', 'CreatedBy', 'ModifiedOn', 'ModifiedBy', 'type', 'value', 'unit', 'date', 'time', 'notes']
+      }
+      
+      const response = await this.apperClient.fetchRecords('health_metric', params)
+      
+      if (!response.success) {
+        toast.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      return response.data || []
+    } catch (error) {
+      console.error('Error fetching health metrics:', error)
+      toast.error('Failed to load health metrics')
+      throw error
+    }
   }
 
   async getById(id) {
-    await delay(200)
-    const metric = this.healthMetrics.find(m => m.Id === parseInt(id, 10))
-    if (!metric) {
-      throw new Error('Health metric not found')
+    try {
+      if (!this.apperClient) this.initializeClient()
+      
+      const params = {
+        fields: ['Name', 'Tags', 'Owner', 'CreatedOn', 'CreatedBy', 'ModifiedOn', 'ModifiedBy', 'type', 'value', 'unit', 'date', 'time', 'notes']
+      }
+      
+      const response = await this.apperClient.getRecordById('health_metric', parseInt(id), params)
+      
+      if (!response.success) {
+        toast.error(response.message)
+        throw new Error(response.message)
+      }
+      
+      return response.data
+    } catch (error) {
+      console.error(`Error fetching health metric with ID ${id}:`, error)
+      toast.error('Failed to load health metric')
+      throw error
     }
-    return { ...metric }
   }
 
   async create(metric) {
-    await delay(400)
-    const maxId = this.healthMetrics.length > 0 ? Math.max(...this.healthMetrics.map(m => m.Id)) : 0
-    const newMetric = {
-      ...metric,
-      Id: maxId + 1
+    try {
+      if (!this.apperClient) this.initializeClient()
+      
+      const params = {
+        records: [{
+          Name: metric.Name || metric.type,
+          Tags: metric.Tags || metric.tags || '',
+          type: metric.type,
+          value: metric.value.toString(),
+          unit: metric.unit || '',
+          date: metric.date,
+          time: metric.time || '',
+          notes: metric.notes || ''
+        }]
+      }
+      
+      const response = await this.apperClient.createRecord('health_metric', params)
+      
+      if (!response.success) {
+        toast.error(response.message)
+        throw new Error(response.message)
+      }
+
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success)
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`)
+          
+          failedRecords.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`)
+            })
+            if (record.message) toast.error(record.message)
+          })
+        }
+        
+        const successfulRecords = response.results.filter(result => result.success)
+        if (successfulRecords.length > 0) {
+          toast.success('Health metric logged successfully')
+          return successfulRecords[0].data
+        }
+      }
+    } catch (error) {
+      console.error('Error creating health metric:', error)
+      toast.error('Failed to log health metric')
+      throw error
     }
-    this.healthMetrics.push(newMetric)
-    return { ...newMetric }
   }
 
   async update(id, metricData) {
-    await delay(350)
-    const index = this.healthMetrics.findIndex(m => m.Id === parseInt(id, 10))
-    if (index === -1) {
-      throw new Error('Health metric not found')
+    try {
+      if (!this.apperClient) this.initializeClient()
+      
+      const params = {
+        records: [{
+          Id: parseInt(id),
+          Name: metricData.Name || metricData.type,
+          Tags: metricData.Tags || metricData.tags || '',
+          type: metricData.type,
+          value: metricData.value.toString(),
+          unit: metricData.unit || '',
+          date: metricData.date,
+          time: metricData.time || '',
+          notes: metricData.notes || ''
+        }]
+      }
+      
+      const response = await this.apperClient.updateRecord('health_metric', params)
+      
+      if (!response.success) {
+        toast.error(response.message)
+        throw new Error(response.message)
+      }
+
+      if (response.results) {
+        const failedRecords = response.results.filter(result => !result.success)
+        
+        if (failedRecords.length > 0) {
+          console.error(`Failed to update ${failedRecords.length} records:${JSON.stringify(failedRecords)}`)
+          
+          failedRecords.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`)
+            })
+            if (record.message) toast.error(record.message)
+          })
+        }
+        
+        const successfulRecords = response.results.filter(result => result.success)
+        if (successfulRecords.length > 0) {
+          toast.success('Health metric updated successfully')
+          return successfulRecords[0].data
+        }
+      }
+    } catch (error) {
+      console.error('Error updating health metric:', error)
+      toast.error('Failed to update health metric')
+      throw error
     }
-    
-    const updatedMetric = {
-      ...this.healthMetrics[index],
-      ...metricData,
-      Id: parseInt(id, 10) // Prevent Id modification
-    }
-    
-    this.healthMetrics[index] = updatedMetric
-    return { ...updatedMetric }
   }
 
   async delete(id) {
-    await delay(250)
-    const index = this.healthMetrics.findIndex(m => m.Id === parseInt(id, 10))
-    if (index === -1) {
-      throw new Error('Health metric not found')
+    try {
+      if (!this.apperClient) this.initializeClient()
+      
+      const params = {
+        RecordIds: [parseInt(id)]
+      }
+      
+      const response = await this.apperClient.deleteRecord('health_metric', params)
+      
+      if (!response.success) {
+        toast.error(response.message)
+        return false
+      }
+
+      if (response.results) {
+        const failedDeletions = response.results.filter(result => !result.success)
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`)
+          
+          failedDeletions.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        
+        const successfulDeletions = response.results.filter(result => result.success)
+        if (successfulDeletions.length > 0) {
+          toast.success('Health metric deleted successfully')
+          return true
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting health metric:', error)
+      toast.error('Failed to delete health metric')
+      throw error
     }
-    this.healthMetrics.splice(index, 1)
-    return true
   }
 
   async getByType(type) {
-    await delay(250)
-    return this.healthMetrics
-      .filter(m => m.type === type)
-      .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`))
-      .map(m => ({ ...m }))
+    try {
+      const allMetrics = await this.getAll()
+      return allMetrics
+        .filter(m => m.type === type)
+        .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`))
+    } catch (error) {
+      console.error('Error fetching metrics by type:', error)
+      toast.error('Failed to load metrics by type')
+      throw error
+    }
   }
 
   async getRecent(limit = 5) {
-    await delay(200)
-    return this.healthMetrics
-      .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`))
-      .slice(0, limit)
-      .map(m => ({ ...m }))
+    try {
+      const allMetrics = await this.getAll()
+      return allMetrics
+        .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`))
+        .slice(0, limit)
+    } catch (error) {
+      console.error('Error fetching recent metrics:', error)
+      toast.error('Failed to load recent metrics')
+      throw error
+    }
   }
 }
 
