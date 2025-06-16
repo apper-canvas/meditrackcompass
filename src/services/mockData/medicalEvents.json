@@ -1,0 +1,47 @@
+[
+  {
+    "Id": 1,
+    "type": "diagnosis",
+    "title": "Hypertension",
+    "date": "2024-01-15",
+    "provider": "Dr. Sarah Chen",
+    "description": "Diagnosed with mild hypertension during routine checkup",
+    "results": "Blood pressure consistently elevated above 140/90. Started on Lisinopril 10mg daily."
+  },
+  {
+    "Id": 2,
+    "type": "test",
+    "title": "Comprehensive Metabolic Panel",
+    "date": "2024-01-10",
+    "provider": "LabCorp",
+    "description": "Annual blood work including glucose, kidney function, and electrolytes",
+    "results": "All values within normal limits. Glucose slightly elevated at 105 mg/dL."
+  },
+  {
+    "Id": 3,
+    "type": "procedure",
+    "title": "Colonoscopy",
+    "date": "2023-12-05",
+    "provider": "Dr. Robert Lee",
+    "description": "Routine colorectal cancer screening",
+    "results": "Normal findings. One small benign polyp removed. Next screening in 5 years."
+  },
+  {
+    "Id": 4,
+    "type": "vaccination",
+    "title": "Influenza Vaccine",
+    "date": "2023-10-15",
+    "provider": "CVS Pharmacy",
+    "description": "Annual flu shot",
+    "results": "No adverse reactions. Protection against seasonal influenza strains."
+  },
+  {
+    "Id": 5,
+    "type": "diagnosis",
+    "title": "Vitamin D Deficiency",
+    "date": "2023-11-20",
+    "provider": "Dr. Sarah Chen",
+    "description": "Low vitamin D levels discovered during annual physical",
+    "results": "Vitamin D level at 18 ng/mL (deficient). Started on 1000 IU daily supplement."
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "title": "Annual Physical Exam",
+    "provider": "Dr. Sarah Chen",
+    "specialty": "Internal Medicine",
+    "date": "2024-02-15",
+    "time": "10:30",
+    "location": "Medical Center - Building A, Room 205",
+    "reason": "Annual checkup and preventive care",
+    "notes": "Bring current medication list and insurance card",
+    "status": "scheduled"
+  },
+  {
+    "Id": 2,
+    "title": "Cardiology Follow-up",
+    "provider": "Dr. Michael Rodriguez",
+    "specialty": "Cardiology",
+    "date": "2024-02-08",
+    "time": "14:15",
+    "location": "Heart & Vascular Institute - 3rd Floor",
+    "reason": "Blood pressure management review",
+    "notes": "Recent blood work results will be discussed",
+    "status": "scheduled"
+  },
+  {
+    "Id": 3,
+    "title": "Dermatology Consultation",
+    "provider": "Dr. Jennifer Kim",
+    "specialty": "Dermatology",
+    "date": "2024-01-25",
+    "time": "11:00",
+    "location": "Skin Care Clinic - Suite 150",
+    "reason": "Mole examination",
+    "notes": "Routine skin cancer screening",
+    "status": "completed"
+  },
+  {
+    "Id": 4,
+    "title": "Eye Exam",
+    "provider": "Dr. David Park",
+    "specialty": "Ophthalmology",
+    "date": "2024-02-20",
+    "time": "09:45",
+    "location": "Vision Center - 2nd Floor",
+    "reason": "Vision check and glaucoma screening",
+    "notes": "Dilated eye exam scheduled",
+    "status": "scheduled"
+  },
+  {
+    "Id": 5,
+    "title": "Physical Therapy",
+    "provider": "Lisa Thompson, PT",
+    "specialty": "Physical Therapy",
+    "date": "2024-01-22",
+    "time": "16:00",
+    "location": "Rehabilitation Center - Room 12",
+    "reason": "Knee injury rehabilitation",
+    "notes": "Continue strengthening exercises",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "Id": 1,
+    "type": "Blood Pressure",
+    "value": "120/80",
+    "unit": "mmHg",
+    "date": "2024-01-20",
+    "time": "08:30",
+    "notes": "Feeling relaxed, measured after morning medication"
+  },
+  {
+    "Id": 2,
+    "type": "Weight",
+    "value": 165.2,
+    "unit": "lbs",
+    "date": "2024-01-20",
+    "time": "07:00",
+    "notes": "Morning weight before breakfast"
+  },
+  {
+    "Id": 3,
+    "type": "Blood Glucose",
+    "value": 95,
+    "unit": "mg/dL",
+    "date": "2024-01-20",
+    "time": "07:15",
+    "notes": "Fasting glucose level"
+  },
+  {
+    "Id": 4,
+    "type": "Heart Rate",
+    "value": 72,
+    "unit": "bpm",
+    "date": "2024-01-20",
+    "time": "08:30",
+    "notes": "Resting heart rate"
+  },
+  {
+    "Id": 5,
+    "type": "Temperature",
+    "value": 98.6,
+    "unit": "°F",
+    "date": "2024-01-19",
+    "time": "18:00",
+    "notes": "Evening temperature check"
+  },
+  {
+    "Id": 6,
+    "type": "Blood Pressure",
+    "value": "118/76",
+    "unit": "mmHg",
+    "date": "2024-01-19",
+    "time": "08:30",
+    "notes": "Morning reading before medication"
+  },
+  {
+    "Id": 7,
+    "type": "Weight",
+    "value": 164.8,
+    "unit": "lbs",
+    "date": "2024-01-19",
+    "time": "07:00",
+    "notes": "Daily weigh-in"
+  },
+  {
+    "Id": 8,
+    "type": "Blood Glucose",
+    "value": 102,
+    "unit": "mg/dL",
+    "date": "2024-01-19",
+    "time": "14:30",
+    "notes": "Post-lunch glucose reading"
+  }
+]
